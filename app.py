@@ -21,9 +21,16 @@ def predict():
 
     # predictions
     result = model.predict(data_df)
+    
+    if result == 1:
+        result_text = 'Hot Lead'
+        boolean_text = 'true'
+    else:
+        result_text = 'Cold Lead'
+        boolean_text = 'false'
 
     # send back to browser
-    output = {'Can be Converted': int(result[0])}
+    output = {'Lead Type':result_text, 'Can be Converted': boolean_text}
 
     # return data
     return jsonify(output)
