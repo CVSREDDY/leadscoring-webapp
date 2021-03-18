@@ -1,23 +1,24 @@
 import pandas as pd
 from flask import Flask, jsonify, request
-import pickle
+import joblib
 
 # load model
-model = pickle.load(open('model.pkl','rb'))
+model = joblib.load('model.pkl')
+model_columns = joblib.load("model_columns.pkl")
 
 # app
 app = Flask(__name__)
 
 # routes
-@app.route('/', methods=['POST'])
-
+@app.route('/leadprediction', methods=['POST'])
 def predict():
     # get data
     data = request.get_json(force=True)
 
     # convert data into dataframe
     data.update((x, [y]) for x, y in data.items())
-    data_df = pd.DataFrame.from_dict(data)
+    data_df = pd.get_dummies(pd.DataFrame.from_dict(data))
+    data_df = data_df.reindex(columns=model_columns, fill_value=0)
 
     # predictions
     result = model.predict(data_df)
