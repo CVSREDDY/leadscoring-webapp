@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import sklearn.metrics as metrics
 import joblib
 from sklearn.linear_model import LogisticRegression
